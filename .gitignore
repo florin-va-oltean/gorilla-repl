@@ -15,3 +15,6 @@ pom.xml.asc
 .DS_Store
 ws/
 .lein-*
+.calva/
+.lsp/
+.clj-kondo/

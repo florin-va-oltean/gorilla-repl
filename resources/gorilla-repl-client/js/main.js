@@ -23,7 +23,7 @@ var app = function () {
      });
     // shows the name of the Leiningen project that gorilla was launched from, makes it easier to manage multiple
     // tabs with multiple gorilla sessions.
-    self.project = ko.observable("no project");
+    self.project = ko.observable("GrapeVine");
 
     // Use this to change the worksheet being edited. It takes care of hooking/unhooking event handlers as well as
     // changing the worksheet data structure itself.
@@ -74,12 +74,12 @@ var app = function () {
         ws.segments().push(
             // Note that the variable ck here is defined in commandProcessor.js, and gives the appropriate
             // shortcut key (ctrl or alt) for the platform.
-            freeSegment("# Gorilla REPL\n\nWelcome to gorilla :-)\n\nShift + enter evaluates code. " +
-                "Hit " + ck + "+g twice in quick succession or click the menu icon (upper-right corner) " +
-                "for more commands ...\n\nIt's a good habit to run each worksheet in its own namespace: feel " +
-                "free to use the declaration we've provided below if you'd like.")
+            freeSegment("# @@GrapeVine@@ \n\nWelcome to GrapeVine (based on Gorilla REPL) \n\nShift + enter evaluates code. " +
+            "Hit " + ck + "+g twice in quick succession or click the menu icon (upper-right corner) " +
+            "for more commands ...\n\nIt's a good habit to run each worksheet in its own namespace: feel " +
+            "free to use the declaration we've provided below if you'd like.")
         );
-        ws.segments().push(codeSegment("(ns " + makeHipNSName() + "\n  (:require [gorilla-plot.core :as plot]))"));
+        ws.segments().push(codeSegment("(ns " + makeHipNSName() + "\n  (:require [grape.core :refer :all]))"));
         self.setWorksheet(ws, "");
         // make it easier for the user to get started by highlighting the empty code segment
         eventBus.trigger("worksheet:segment-clicked", {id: self.worksheet().segments()[1].id});
@@ -88,7 +88,7 @@ var app = function () {
 
     // bound to the window's title
     self.title = ko.computed(function () {
-        if (self.filename() === "") return "Gorilla REPL - " + self.project();
+        if (self.filename() === "") return "GrapePress - " + self.project();
         else return self.project() + " : " + self.filename();
     });
 

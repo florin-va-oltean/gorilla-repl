@@ -41,7 +41,7 @@
         phone-home (or (:phone-home (:gorilla-options conf)) (nil? (:phone-home (:gorilla-options conf))))
         _ (handle/update-excludes (fn [x] (set/union x (:load-scan-exclude (:gorilla-options conf)))))]
     ;; app startup
-    (println "Gorilla-REPL:" version)
+    (println "GrapePress" version)
     ;; build config information for client
     (handle/set-config :project project)
     (handle/set-config :keymap keymap)
@@ -59,4 +59,8 @@
 
 (defn -main
   [& args]
-  (run-gorilla-server {:port 8990}))
+  (run-gorilla-server {:port 8999 :ip "0.0.0.0"
+                       :nrepl-port 62222
+                       :phone-home false
+                       :project "GrapeVine"
+                       :version "0.7.0-SNAPSHOT"}))

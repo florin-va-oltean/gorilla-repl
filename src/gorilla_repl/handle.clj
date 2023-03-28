@@ -52,7 +52,8 @@
         (res/response {:status "ok"})))))
 
 ;; More ugly atom usage to support defroutes
-(def ^:private excludes (atom #{".git"}))
+(def ^:private excludes (atom #{".git" "src" "target" "test"
+"resources"}))
 
 ;; configuration information that will be made available to the webapp
 (def ^:private conf (atom {}))
