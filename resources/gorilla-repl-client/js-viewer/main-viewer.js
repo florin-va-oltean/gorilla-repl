@@ -11,8 +11,8 @@ var app = function () {
     self.worksheet = ko.observable();
     self.filename = ko.observable("");
     self.title = ko.computed(function () {
-        if (self.filename() === "") return "Gorilla REPL viewer";
-        else return "Gorilla REPL viewer: " + self.filename();
+        if (self.filename() === "") return "GrapePress viewer";
+        else return "GrapePress viewer: " + self.filename();
     });
     self.sourceURL = ko.observable("");
     self.source = ko.observable("");
@@ -52,6 +52,7 @@ var app = function () {
 
         // we only use CodeMirror to syntax highlight the code in the viewer
         CodeMirror.colorize($("pre.static-code"), "text/x-clojure");
+        genToc();
 
     };
 

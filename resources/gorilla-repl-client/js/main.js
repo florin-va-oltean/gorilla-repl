@@ -66,6 +66,7 @@ var app = function () {
                 // not a lot we can do here.
                 alert("Unable to get app configuration. Restart server.");
             });
+            
     };
 
     // A helper function to create a new, blank worksheet with some introductory messages in.
@@ -280,6 +281,7 @@ $(function () {
             gorilla.start(initialFilename);
             // for debugging. Let's hope nobody else has defined a global variable called gorilla!
             window.gorilla = gorilla;
+            genToc();
         },
         // this function is called if we failed to make a REPL connection. We can't really go any further.
         function () {
