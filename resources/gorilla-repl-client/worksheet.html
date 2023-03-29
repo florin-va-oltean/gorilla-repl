@@ -76,6 +76,10 @@
 
 <div id="contents">
     <div class="segment container-segment">
+        <h2><a href="#!" onclick="genToc();">Generate Table of Contents</a></h2>
+        <div id="toc"></div>
+        <hr>
+        <hr>
         <div class="container-children">
         <div data-bind="template: {name: 'segment-template', foreach: worksheet().segments()}">
         </div>
@@ -209,6 +213,23 @@
     </div>
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.css">
 
+<script>
+
+function genToc() {
+    tocbot.init({
+  // Where to render the table of contents.
+  tocSelector: '#toc',
+  // Where to grab the headings to build the table of contents.
+  contentSelector: '.container-children',
+  // Which headings to grab inside of the contentSelector element.
+  headingSelector: 'h2, h3, h4, h5, h6',
+  // For headings inside relative or absolute positioned containers within content.
+  hasInnerContainers: true,
+  collapseDepth: 6,
+})}
+</script>
 </body>
 </html>
