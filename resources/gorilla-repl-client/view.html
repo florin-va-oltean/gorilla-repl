@@ -109,7 +109,7 @@
 
 <!-- Copying instructions -->
 <div class="copyBox" style="display: none" data-bind="visible: copyBoxVisible">
-    <p>This code can be found on <span data-bind="text: host"></span> here:</p>
+    <p>This worksheet can be found <span data-bind="text: host"></span> here:</p>
     <div data-bind="visible: (!(source().toLowerCase() === 'gist'))">
         <a data-bind="attr: {href: sourceURL}, text: sourceURL" target="_blank"></a>
         </div>
@@ -117,33 +117,7 @@
         <a data-bind="attr: {href: sourceURL}, text: sourceURL" target="_blank"></a>
     </div>
 
-    <p>You can run and edit your own copy of this worksheet in under five minutes, even if you've never used
-    Clojure or Gorilla REPL before:</p>
-    <div data-bind="visible: (!(source().toLowerCase() === 'gist'))">
-    <ul>
-        <li>If you don't yet have Leiningen installed, then follow the instructions
-            <a href="http://leiningen.org/#install" target="_blank">here</a>. It only takes a couple of minutes.</li>
-        <li>Clone the <span data-bind="text: host"></span>  project that contains this worksheet:
-            <a data-bind="attr: {href: sourceURL}, text: sourceURL" target="_blank"></a>.</li>
-        <li>Open a terminal in the project directory and run "lein gorilla".</li>
-        <li>Open the load dialog by pressing "alt+g alt+l" ("ctrl+g ctrl+l" on Mac).</li>
-        <li>Enter the path "<span data-bind="text: filename"></span>" into the dialog.</li>
-    </ul>
-    </div>
-    <div data-bind="visible: (source().toLowerCase() === 'gist')">
-        <ul>
-            <li>If you don't have Gorilla REPL installed yet, then follow the instructions
-                <a href="http://gorilla-repl.org/start.html" target="_blank">here</a>.
-            </li>
-            <li>Download the worksheet from the GitHub gist:
-                <a data-bind="attr: {href: sourceURL}, text: sourceURL" target="_blank"></a>.</li>
-            <li>Assuming you've added the Gorilla plugin to your "profiles.clj", as described in the getting started
-                instructions from step one, then run "lein gorilla"</li>
-            <li>Open the load dialog by pressing "alt+g alt+l" ("ctrl+g ctrl+l" on Mac).</li>
-            <li>Enter the path to the file you saved in step two.</li>
-        </ul>
-    </div>
-    <p>That's it, you're done. Have fun!</p>
+    <p>You can run and edit this worksheet after installing <a href="https://github.com/jenshweber/grape" target="_blank">GrapeVine</a>.</p>
     <div class="button" data-bind="click: hideCopyBox">OK, got it</div>
 </div>
 
@@ -157,10 +131,10 @@
   // Where to grab the headings to build the table of contents.
   contentSelector: '.container-children',
   // Which headings to grab inside of the contentSelector element.
-  headingSelector: 'h2, h3, h4, h5, h6',
+  headingSelector: 'h1, h2, h3, h4, h5, h6',
   // For headings inside relative or absolute positioned containers within content.
   hasInnerContainers: true,
-  collapseDepth: 1,
+  collapseDepth: 2,
   orderedList: false,
 })}
 </script>

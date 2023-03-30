@@ -61,7 +61,7 @@ div.menu-icon:hover {
 }
 
 div.modal {
-    position: fixed;
+   /* position: fixed;
     /* There seems to be a bug in Safari with rendering text in fixed elements. */
     -webkit-font-smoothing: subpixel-antialiased;
     z-index: 999;
@@ -73,7 +73,9 @@ div.modal {
     padding: 7px;
     /*border: 1px solid #4682b4;*/
     font-family: 'Arvo', serif;
-    font-size: 16px
+    font-size: 16px;
+    display: block;
+    height: unset;
 }
 
 div.modal h3 {

@@ -6,6 +6,21 @@
 
 // The app keeps track of application level state, and handles UI and interaction that's not part of the worksheet
 // itself (things like load/save, commands etc).
+
+function genToc() {
+    tocbot.init({
+  // Where to render the table of contents.
+  tocSelector: '#toc',
+  // Where to grab the headings to build the table of contents.
+  contentSelector: '.container-children',
+  // Which headings to grab inside of the contentSelector element.
+  headingSelector: 'h1, h2, h3, h4, h5, h6',
+  // For headings inside relative or absolute positioned containers within content.
+  hasInnerContainers: true,
+  collapseDepth: 2,
+  orderedList: false,
+})}
+
 var app = function () {
     var self = {};
 
@@ -232,7 +247,7 @@ var app = function () {
             message: "<p>The connection to the server has been lost. This window is now dead! Hit the button to " +
                 "reload the browser window once the server is running again.</p>" +
                 "<p>In case you didn't manage to save the worksheet, " +
-                "the contents are below for your convenience :-)</p>",
+                "the contents are below for your convenience.</p>",
             caption: "Connection to server lost",
             contents: self.worksheet().toClojure(),
             okButtonText: "Reload",
@@ -281,7 +296,6 @@ $(function () {
             gorilla.start(initialFilename);
             // for debugging. Let's hope nobody else has defined a global variable called gorilla!
             window.gorilla = gorilla;
-            genToc();
         },
         // this function is called if we failed to make a REPL connection. We can't really go any further.
         function () {
