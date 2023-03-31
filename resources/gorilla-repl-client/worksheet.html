@@ -84,6 +84,7 @@
 <div data-bind="template: {name: 'save-template', data: saveDialog}"></div>
 <div data-bind="template: {name: 'doc-template', data: docViewer}"></div>
 
+<div id="contents"> 
     <div class="segment container-segment">
         <div class="container-children">
         <div data-bind="template: {name: 'segment-template', foreach: worksheet().segments()}">
@@ -91,6 +92,7 @@
         </div>
     </div>
 </div> </div>
+</div>
 <div class="scroll-pad"></div>
 
 <!-- Templates -->
