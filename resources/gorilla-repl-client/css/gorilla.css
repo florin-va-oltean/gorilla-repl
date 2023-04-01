@@ -236,3 +236,12 @@ div.CodeMirror span.CodeMirror-matchingbracket {
     }
 
 }
+
+span.value {
+    display: grid;
+}
+
+svg {
+	display: block;
+	height: auto;
+}

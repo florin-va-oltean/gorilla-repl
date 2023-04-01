@@ -56,6 +56,7 @@
     <script type="text/javascript" src="js/codeDialog.js"></script>
     <script type="text/javascript" src="js/docViewer.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+    <script src="js/svg-pan-zoom-container.js"></script>
 
     <script>
         // Enable navigation prompt
@@ -201,6 +202,8 @@
             <pre><code data-bind="html: consoleText"></code></pre>
         </div>
         <div class="output"
+        data-zoom-on-wheel
+     data-pan-on-drag
              data-bind="visible: (output() != ''), outputViewer: output, segmentID: id">
             </div>
         <div class="segment-footer"></div>
@@ -232,7 +235,7 @@
   headingSelector: 'h1, h2, h3, h4, h5, h6',
   // For headings inside relative or absolute positioned containers within content.
   hasInnerContainers: true,
-  collapseDepth: 2,
+  collapseDepth: 1,
   orderedList: false,
 })}
 </script>
