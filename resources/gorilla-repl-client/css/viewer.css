@@ -4,6 +4,21 @@
  * gorilla-repl is licenced to you under the MIT licence. See the file LICENCE.txt for full details.
  */
 
+ span.value {
+    display: grid;
+}
+
+pre {
+    overflow: visible;
+}
+
+blockquote {
+	margin: 1em 3em;
+	padding: .5em;
+	background-color: #f6ebc1; }
+blockquote p {
+	margin: 0; }
+
 pre.static-code {
     margin: 0.3em;
 }

@@ -13,12 +13,13 @@
     <link href='http://fonts.googleapis.com/css?family=Arvo:400,700,400italic,700italic|Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <!--<link href='css/fonts.css' rel='stylesheet' type='text/css'/>-->
     <link rel="stylesheet" href="jslib/codemirror-5.42.0/lib/codemirror.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <link rel="stylesheet" href="css/worksheet.css"/>
     <link rel="stylesheet" href="css/output.css"/>
     <link rel="stylesheet" href="css/viewer.css"/>
     <link rel="stylesheet" href="css/tocbot.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+   
     <script type="text/javascript"
             src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG-full.js&delayStartupUntil=configured"></script>
     <script type="text/javascript" src="jslib/marked/marked.min.js"></script>
@@ -43,6 +44,7 @@
     <script type="text/javascript" src="js-viewer/github.js"></script>
     <script type="text/javascript" src="js-viewer/bitbucket.js"></script>
     <script type="text/javascript" src="js-viewer/main-viewer.js"></script>
+    <script src="js/svg-pan-zoom-container.js"></script>
 
     <title data-bind="text: title">GrapePress Viewer</title>
 </head>
@@ -58,10 +60,10 @@
 </div>
 
 <div class="row no-gutters">
-    <div class="col-3 d-lg-block nopadding">
+    <div class="col-2 d-lg-block nopadding">
       <nav id="toc" class="auto-toc sticky-top py-5"></nav>
     </div>
-    <div class="col-9 main-content nopadding">
+    <div class="col-10 main-content nopadding">
 
 <div id="contents" data-bind="css: {veiled: copyBoxVisible}">
     <div class="segment container-segment">
@@ -92,6 +94,8 @@
             <pre><code data-bind="html: consoleText"></code></pre>
         </div>
         <div class="output"
+        data-zoom-on-wheel
+        data-pan-on-drag
              data-bind="visible: (output() != ''), outputViewer: output, segmentID: id">
         </div>
         <div class="segment-footer"></div>
@@ -134,7 +138,7 @@
   headingSelector: 'h1, h2, h3, h4, h5, h6',
   // For headings inside relative or absolute positioned containers within content.
   hasInnerContainers: true,
-  collapseDepth: 2,
+  collapseDepth: 1,
   orderedList: false,
 })}
 </script>
