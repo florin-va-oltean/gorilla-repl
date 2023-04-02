@@ -134,7 +134,7 @@ var svgPanZoomContainer = (function (exports) {
         button: 'left',
     });
     zoomOnWheel('data-zoom-on-wheel', {
-        minScale: 1,
+        minScale: 0.01,
         maxScale: 10,
         zoomAmount: .002,
     });

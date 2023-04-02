@@ -245,3 +245,13 @@ svg {
 	display: block;
 	height: auto;
 }
+
+pre {
+    overflow: visible;
+}
+blockquote {
+	margin: 1em 3em;
+	padding: .5em;
+	background-color: #f6ebc1; }
+blockquote p {
+	margin: 0; }
