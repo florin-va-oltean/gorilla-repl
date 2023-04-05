@@ -237,9 +237,7 @@ div.CodeMirror span.CodeMirror-matchingbracket {
 
 }
 
-span.value {
-    display: grid;
-}
+
 
 svg {
 	display: block;
@@ -255,3 +253,4 @@ blockquote {
 	background-color: #f6ebc1; }
 blockquote p {
 	margin: 0; }
+    

@@ -30,7 +30,10 @@ var render = function (data, element, errorCallback) {
 var renderPart = function (data, callbackQueue, errorCallback) {
     switch (data.type) {
         case "html":
-            return renderHTML(data, callbackQueue, errorCallback);
+            if (data.value.startsWith("#gorilla_repl.html.HtmlView"))
+                return renderHTMLgrid(data, callbackQueue, errorCallback);
+            else 
+                return renderHTML(data, callbackQueue, errorCallback);
         case "list-like":
             return renderListLike(data, callbackQueue, errorCallback);
         case "vega":
@@ -47,8 +50,16 @@ var wrapWithValue = function (data, content) {
     return "<span class='value' data-value='" + _.escape(data.value) + "'>" + content + "</span>";
 };
 
+var wrapWithValueGrid = function (data, content) {
+    return "<span class='value' style='display:grid' data-value='" + _.escape(data.value) + "'>" + content + "</span>";
+};
+
 var renderHTML = function (data, callbackQueue, errorCallback) {
     return wrapWithValue(data, data.content);
+};
+
+var renderHTMLgrid = function (data, callbackQueue, errorCallback) {
+    return wrapWithValueGrid(data, data.content);
 };
 
 var renderListLike = function (data, callbackQueue, errorCallback) {
