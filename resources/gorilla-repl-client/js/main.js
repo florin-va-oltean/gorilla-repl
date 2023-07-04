@@ -90,12 +90,107 @@ var app = function () {
         ws.segments().push(
             // Note that the variable ck here is defined in commandProcessor.js, and gives the appropriate
             // shortcut key (ctrl or alt) for the platform.
-            freeSegment("# @@GrapeVine@@ \n\nWelcome to GrapeVine (based on Gorilla REPL) \n\nShift + enter evaluates code. " +
+            freeSegment("## Welcome \n\nWelcome to **Training Center**  (based on GrapePress book) \n\nShift + enter evaluates code. " +
             "Hit " + ck + "+g twice in quick succession or click the menu icon (upper-right corner) " +
             "for more commands ...\n\nIt's a good habit to run each worksheet in its own namespace: feel " +
             "free to use the declaration we've provided below if you'd like.")
         );
-        ws.segments().push(codeSegment("(ns " + makeHipNSName() + "\n  (:require [grape.core :refer :all]))"));
+        ws.segments().push(
+            freeSegment(
+                "## Intro \n\n" +
+                "First you have to define the name of your scenario and include basic actions into it so that you can use them"
+            )
+        );
+        ws.segments().push(
+            freeSegment(
+                "## Scenario \n\n" +
+                "The essence is to implement a function in Clojure that takes three parameters and \n" +
+                "returns 0 (if not call is processed), 1 (if a call is processed) or throws an exception. " +
+                "This function is invoked by our framework after every click on inbox to handle the call, after the focus is in main Gemma window, and it is supposed to describe the steps used by Gemma user to act until media call and Gemma file is closed. \n\n" +
+                "### Scenario parameters \n\n" +
+                "  - first parameter is the browser session handle; you need to pass it to every agent action (think of it as the mouse in real like or the keyboard) \n\n" +
+                "  - second parameter is the caller number that is presented to the Gemma user \n\n" +
+                "  - the last parameter is the options passed when starting the agent, the json file\n\n" +
+                "### Scenario preparation \n\n" +
+                "In order to run the scenario, you must first load a configuration and initiate the browser connection.\n\n" +
+                "This is done via the following code:\n\n"
+            )
+        );
+        ws.segments().push(
+            codeSegment(
+                "(ns change-this-name \n" +
+                "  (:require [etaoin.api :as gemma]\n" +
+                "            [etaoin-sts.basics :as actions]\n" +
+                "            [etaoin-sts.agent.operator :as stats]\n" +
+                "            [etaoin-sts.simple-call-processing :as init]\n" +
+                "            [cheshire.core :as json]))\n" +
+                "\n" +
+                "(def path-to-config-file" +
+                "  \"Full file to config file on disk; filesystem is where java for Gemma robot is running\"" +
+                "  \"/change/here/the/path/to/config.json\")\n" +
+                "(def config (json/parse-string (slurp path-to-config-file) true))\n" +
+                "(def browser (agent/chrome config))\n"
+            )
+        );
+
+        ws.segments().push(
+            freeSegment(
+                "### Scenario implementation \n\n" +
+                "Below there is a sample of a scenario function; remember that at the time of execution of this function: \n\n" +
+                "  - the user already clicked on inbox to take a call \n\n" +
+                "  - the user already moved focus to main Gemma window \n\n" +
+                "  - media is already connected (visible in CTI toolbar, the caller is available already to the agent)"
+            )
+
+        );
+
+        ws.segments().push(
+            codeSegment(
+                "(defn wait-for-case-file-fill-it-and-close-call\n" +
+                "  [browser caller opts]\n" +
+                "  (let [subject (:incident-subject opts)\n" +
+                "        incident-type (:incident-type opts)\n" +
+                "        county (:county opts)\n" +
+                "        call-duration (:call-duration-ms opts)\n" +
+                "        username (:agent-name opts)]\n" +
+                "    (stats/start-call username caller \"simple_call\")\n" +
+                "    (let [start-call-timestamp-ms (System/currentTimeMillis)\n" +
+                "          _ (gemma/wait-exists browser [{:fn/has-text \"#Call\"} {:xpath \"..\"}{:fn/has-class \"dataField\"}] {:timeout (or (:wait-for-case-file-sec opts) 8) :interval 0.5 :message \"call id not presented on time\"})\n" +
+                "          call-id (gemma/get-element-text browser [{:fn/has-text \"#Call\"} {:xpath \"..\"} {:fn/has-class \"dataField\"}])]\n" +
+                "      (if (or (empty? call-id)\n" +
+                "              (empty? (clojure.string/trim call-id)))\n" +
+                "        (do\n" +
+                "          (throw (ex-info \"case file not appearing also call is presented\" {:user username :caller caller})))\n" +
+                "        (do\n" +
+                "          (stats/mark-call-progress username :case-open)\n" +
+                "          (actions/wait-for-optional-element-and-click browser gemma/wait-visible [{:fn/has-text \"Related calls\"} {:xpath \"..\"} {:tag :button}] opts)\n" +
+                "          (actions/wait-for-optional-element-and-click browser gemma/wait-exists [{:fn/has-text \"Associate\"} {:xpath \"..\"} {:tag :button}] opts)\n" +
+                "          (stats/mark-call-progress username :related-calls-incidents-completed)\n" +
+                "          (gemma/fill browser [{:fn/has-class \"showSubjectHistoryBtn\"} {:xpath \"..\"} {:fn/has-class \"format-input-container\"} {:tag :textarea}] subject)\n" +
+                "          (stats/mark-call-progress username :subject-completed)\n" +
+                "          (actions/select-dropdown-filter-and-click-option browser \"Judet\" county \"\" \" (RO)\" opts)\n" +
+                "          (stats/mark-call-progress username :county-completed)\n" +
+                "          (gemma/wait browser 1)\n" +
+                "          (actions/select-dropdown-filter-and-click-option browser \"Description\" incident-type \"\" \"\" opts)\n" +
+                "          (stats/mark-call-progress username :index-completed)\n" +
+                "          (gemma/wait browser 1)\n" +
+                "          (gemma/click browser {:fn/text \"Accept Protocol\"})\n" +
+                "          (stats/mark-call-progress username :accept-protocol-completed)\n" +
+                "          (gemma/wait-exists browser [{:fn/has-text \"#Incident\"} {:xpath \"..\"} {:fn/class \"dataField\"}] (assoc opts :message \"incident id not displayed on time\"))\n" +
+                "          (let [incident-id (gemma/get-element-text browser [{:fn/has-text \"#Incident\"} {:xpath \"..\"} {:fn/class \"dataField\"}])]\n" +
+                "            (if (or (empty? incident-id)\n" +
+                "                    (empty? (clojure.string/trim incident-id)))\n" +
+                "              (do\n" +
+                "                (stats/mark-call-progress username :incident-not-created)\n" +
+                "                (actions/make-screenshot browser \"incident_id_retrieval\" \"cannot retrieve incident id after accept protocol\" nil opts))\n" +
+                "              (let [_ (stats/mark-call-progress username :incident-created {:incident-id incident-id})\n" +
+                "                    incident-timestamp-ms (System/currentTimeMillis)\n" +
+                "                    remaining-call-duration (- call-duration (- incident-timestamp-ms start-call-timestamp-ms))]\n" +
+                "                (when (> remaining-call-duration 0)\n" +
+                "                  (Thread/sleep remaining-call-duration)))))\n" +
+                "          1)))))"
+            )
+        );
         self.setWorksheet(ws, "");
         // make it easier for the user to get started by highlighting the empty code segment
         eventBus.trigger("worksheet:segment-clicked", {id: self.worksheet().segments()[1].id});

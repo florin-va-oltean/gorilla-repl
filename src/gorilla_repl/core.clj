@@ -27,8 +27,8 @@
            (route/files "/project-files" {:root "."}))
 
 
-(defn run-gorilla-server
-  [conf]
+(defn run-web-server
+  [conf api-routes]
   ;; get configuration information from parameters
   (let [version (or (:version conf) "develop")
         webapp-requested-port (or (:port conf) 0)
@@ -40,27 +40,24 @@
         keymap (or (:keymap (:gorilla-options conf)) {})
         phone-home (or (:phone-home (:gorilla-options conf)) (nil? (:phone-home (:gorilla-options conf))))
         _ (handle/update-excludes (fn [x] (set/union x (:load-scan-exclude (:gorilla-options conf)))))]
-    ;; app startup
-    (println "GrapePress" version)
     ;; build config information for client
     (handle/set-config :project project)
     (handle/set-config :keymap keymap)
-    ;; check for updates
-    (if phone-home
-      (version/check-for-update version))  ;; runs asynchronously)
     ;; first startup nREPL
     (nrepl/start-and-connect nrepl-requested-port nrepl-port-file)
     ;; and then the webserver
-    (let [s (server/run-server #'app-routes {:port webapp-requested-port :join? false :ip ip :max-body 500000000})
+    (let [s (server/run-server api-routes {:port webapp-requested-port :join? false :ip ip :max-body 500000000})
           webapp-port (:local-port (meta s))]
       (spit (doto gorilla-port-file .deleteOnExit) webapp-port)
-      (println (str "Running at http://" ip ":" webapp-port "/worksheet.html ."))
+      (println (str "Running at port:" webapp-port))
       (println "Ctrl+C to exit."))))
 
 (defn -main
   [& args]
-  (run-gorilla-server {:port 8999 :ip "0.0.0.0"
-                       :nrepl-port 62222
-                       :phone-home false
-                       :project "GrapeVine"
-                       :version "0.7.0-SNAPSHOT"}))
+  (run-web-server {:port 8999
+                   :ip "0.0.0.0"
+                   :nrepl-port 62222
+                   :phone-home false
+                   :project "Maricica"
+                   :version "0.8.0"}
+                  app-routes))
